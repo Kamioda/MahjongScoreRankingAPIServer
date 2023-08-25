@@ -9,7 +9,7 @@ import { newRecordSpec } from './specs/record/new';
 import ReadAPIConfig from './loader/config';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
-const AccountMgr: AccountManager = new AccountManager(Config.access_token.length);
+const AccountMgr: AccountManager = new AccountManager(Config.account_manager.password_len);
 const ScoreMgr: ScoreManager = new ScoreManager(Config.scoredata);
 
 export default function CreateAPIServer(): express.Express {
