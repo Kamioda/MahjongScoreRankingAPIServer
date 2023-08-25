@@ -44,5 +44,9 @@ export default function CreateAPIServer(): express.Express {
     app.get('/api/record', async (req, res) => {
         res.status(200).json(ScoreMgr.read());
     });
+    app.delete('/api/record/:record_id', async (req, res) => {
+        ScoreMgr.remove(req.params.record_id);
+        res.sendStatus(200);
+    });
     return app;
 }
