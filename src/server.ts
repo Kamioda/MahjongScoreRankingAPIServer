@@ -4,8 +4,10 @@ import pkg from '@json-spec/core';
 import { createAccountSpec } from './specs/account/create';
 import AccountManager from './Account';
 import { signinSpec } from './specs/account/signin';
+import ReadAPIConfig from './loader/config';
 const { isValid } = pkg;
-const AccountMgr: AccountManager = new AccountManager();
+const Config = ReadAPIConfig('./api.config');
+const AccountMgr: AccountManager = new AccountManager(Config.access_token.length);
 
 export default function CreateAPIServer(): express.Express {
     const app = express();
