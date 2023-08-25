@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       db:
-        image: ghcr.io/kamioda/mjrankingtestdb:v1.0.0 
-        options: "--name=mysql"
+        image: ghcr.io/kamioda/mjrankingtestdb:v1.0.0
+        options: '--name=mysql'
         ports:
           - 3306:3306
         env:
@@ -26,7 +26,7 @@ jobs:
             --health-timeout 5s
             --health-retries 5
     env:
-      DATABASE_URL: "mysql://mahjongranking:mahjongrankingservice001@localhost:3306/mahjongranking"
+      DATABASE_URL: 'mysql://mahjongranking:mahjongrankingservice001@localhost:3306/mahjongranking'
     steps:
       - uses: actions/checkout@v3
       - run: sudo docker ps
