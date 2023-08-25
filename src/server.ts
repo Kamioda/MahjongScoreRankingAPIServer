@@ -6,7 +6,7 @@ import { signinSpec } from './specs/account/signin';
 const { isValid } = pkg;
 const AccountMgr: AccountManager = new AccountManager();
 
-export default function CreateAPIServer() {
+export default function CreateAPIServer(): express.Express {
     const app = express();
     app.post('/api/account', express.json(), async (req, res) => {
         if (!isValid(createAccountSpec, req.body)) return res.sendStatus(400);
@@ -26,4 +26,5 @@ export default function CreateAPIServer() {
                 res.sendStatus(401);
             });
     });
+    return app;
 };
