@@ -41,5 +41,8 @@ export default function CreateAPIServer(): express.Express {
         ScoreMgr.add(req.body);
         res.sendStatus(200);
     });
+    app.get('/api/record', async (req, res) => {
+        res.status(200).json(ScoreMgr.read());
+    });
     return app;
 }
