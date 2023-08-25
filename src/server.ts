@@ -7,9 +7,11 @@ import ScoreManager from './ScoreManager';
 import { signinSpec } from './specs/account/signin';
 import { newRecordSpec } from './specs/record/new';
 import ReadAPIConfig from './loader/config';
+import AccessTokenManager from './AccessTokenManager';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
 const AccountMgr: AccountManager = new AccountManager(Config.account_manager.password_len);
+const AccessToken: AccessTokenManager = new AccessTokenManager(Config.access_token.length);
 const ScoreMgr: ScoreManager = new ScoreManager(Config.scoredata);
 
 export default function CreateAPIServer(): express.Express {
