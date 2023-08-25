@@ -2,7 +2,7 @@
   "name": "mahjongscorerankingapi",
   "version": "1.0.0",
   "description": "Mahjong Score Ranking API server",
-  "main": "server.js",
+  "main": "features/server.js",
   "type": "module",
   "engines": {
     "node": ">=20.0.0"
