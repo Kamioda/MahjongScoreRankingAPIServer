@@ -2,12 +2,13 @@ import express from 'express';
 import { bearerToken } from 'express-bearer-token';
 import pkg from '@json-spec/core';
 import ReadAPIConfig from './loader/config';
-import AccountManager from './Account';
+import AccountManager, { NewUserInformation } from './Account';
 import AccessTokenManager from './AccessTokenManager';
 import ScoreManager from './ScoreManager';
 import { createAccountSpec } from './specs/account/create';
 import { signinSpec } from './specs/account/signin';
 import { newRecordSpec } from './specs/record/new';
+import { updateAccountSpec } from './specs/account/update';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
 const AccountMgr: AccountManager = new AccountManager(Config.account_manager.password_len);
@@ -36,6 +37,19 @@ export default function CreateAPIServer(): express.Express {
             .catch((er: Error) => {
                 res.status(404).send(er.message);
             });
+    });
+    app.patch('/api/account', express.json(), async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
+
+        if (!isValid(updateAccountSpec, req.body)) return res.sendStatus(400);
+        await AccountMgr.ChangeUserInfo(SystemID, req.body as NewUserInformation)
+        .then(newRecord => {
+            return newRecord == null
+                ? res.sendStatus(400)
+                : res.status(200).json(newRecord);
+        });
     });
     app.post('/api/signin', express.json(), async (req, res) => {
         if (!isValid(signinSpec, req.body)) return res.sendStatus(400);
