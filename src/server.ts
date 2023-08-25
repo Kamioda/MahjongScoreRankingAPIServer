@@ -3,11 +3,14 @@ import { bearerToken } from 'express-bearer-token';
 import pkg from '@json-spec/core';
 import { createAccountSpec } from './specs/account/create';
 import AccountManager from './Account';
+import ScoreManager from './ScoreManager';
 import { signinSpec } from './specs/account/signin';
+import { newRecordSpec } from './specs/record/new';
 import ReadAPIConfig from './loader/config';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
 const AccountMgr: AccountManager = new AccountManager(Config.access_token.length);
+const ScoreMgr: ScoreManager = new ScoreManager(Config.scoredata);
 
 export default function CreateAPIServer(): express.Express {
     const app = express();
@@ -29,6 +32,11 @@ export default function CreateAPIServer(): express.Express {
             .catch(() => {
                 res.sendStatus(401);
             });
+    });
+    app.post('/api/record', express.json(), async (req, res) => {
+        if (!isValid(newRecordSpec, req.body)) return res.sendStatus(400);
+        ScoreMgr.add(req.body);
+        res.sendStatus(200);
     });
     return app;
 };
