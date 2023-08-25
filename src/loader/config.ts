@@ -4,7 +4,12 @@ interface TokenConfig {
     length: number;
 }
 
+interface AccountManagerConfig {
+    password_len: number;
+}
+
 interface ApiConfig {
+    account_manager: AccountManagerConfig;
     access_token: TokenConfig;
     scoredata: string;
 }
