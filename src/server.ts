@@ -39,4 +39,4 @@ export default function CreateAPIServer(): express.Express {
         res.sendStatus(200);
     });
     return app;
-};
+}
