@@ -1,7 +1,8 @@
-import { Account } from '../Account';
+import AccountManager from '../Account';
 import { RecordInformations } from '../ScoreManager';
 
 export async function convert(Records: RecordInformations): Promise<RecordInformations> {
+    const Account: AccountManager = new AccountManager();
     const UserIDs = {};
     const Keys = Object.keys(Records);
     const Promises: Promise<void>[] = Keys.map(
