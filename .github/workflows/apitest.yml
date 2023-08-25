@@ -9,9 +9,6 @@ jobs:
   test_api:
     name: api test
     runs-on: ubuntu-20.04
-    defaults:
-      run:
-        working-directory: "./APIServer"
     services:
       db:
         image: ghcr.io/kamioda/mjrankingtestdb:v1.0.0 
@@ -39,7 +36,6 @@ jobs:
         with:
           node-version: '20'
           cache: npm
-          cache-dependency-path: ./APIServer
       - run: npm ci
       - name: Execute test
         run: |
@@ -50,4 +46,3 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./APIServer/coverage/lcov.info
