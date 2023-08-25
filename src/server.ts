@@ -28,8 +28,9 @@ export default function CreateAPIServer(): express.Express {
     app.post('/api/signin', express.json(), async (req, res) => {
         if (!isValid(signinSpec, req.body)) return res.sendStatus(400);
         await AccountMgr.SignIn(req.body.id, req.body.password)
-            .then(() => {
-                res.sendStatus(200);
+            .then(id => {
+                const AccessTokenText = AccessToken.create(id);
+                res.status(200).json({ token_type: 'bearer', access_token: AccessTokenText });
             })
             .catch(() => {
                 res.sendStatus(401);
