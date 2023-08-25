@@ -25,6 +25,18 @@ export default function CreateAPIServer(): express.Express {
                 console.log(er.message);
             });
     });
+    app.get('/api/account', async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
+        await AccountMgr.GetAccountInfo(SystemID)
+            .then(result => {
+                res.status(200).json(result);
+            })
+            .catch((er: Error) => {
+                res.status(404).send(er.message);
+            });
+    });
     app.post('/api/signin', express.json(), async (req, res) => {
         if (!isValid(signinSpec, req.body)) return res.sendStatus(400);
         await AccountMgr.SignIn(req.body.id, req.body.password)
