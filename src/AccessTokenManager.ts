@@ -23,6 +23,6 @@ export default class AccessTokenManager {
     invalidation(Token: string): boolean {
         if (!Object.keys(this.#AccessTokens).includes(Token)) return false;
         delete this.#AccessTokens[Token];
-        return!Object.keys(this.#AccessTokens).includes(Token);
+        return !Object.keys(this.#AccessTokens).includes(Token);
     }
 }
