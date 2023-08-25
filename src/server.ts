@@ -1,13 +1,13 @@
 import express from 'express';
 import { bearerToken } from 'express-bearer-token';
 import pkg from '@json-spec/core';
-import { createAccountSpec } from './specs/account/create';
+import ReadAPIConfig from './loader/config';
 import AccountManager from './Account';
+import AccessTokenManager from './AccessTokenManager';
 import ScoreManager from './ScoreManager';
+import { createAccountSpec } from './specs/account/create';
 import { signinSpec } from './specs/account/signin';
 import { newRecordSpec } from './specs/record/new';
-import ReadAPIConfig from './loader/config';
-import AccessTokenManager from './AccessTokenManager';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
 const AccountMgr: AccountManager = new AccountManager(Config.account_manager.password_len);
