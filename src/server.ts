@@ -1,10 +1,10 @@
 import express from 'express';
 import pkg from '@json-spec/core';
-import { createAccountSpec } from './features/specs/account/create.js';
-import { AccountManager } from './features/Account.js';
-import { signinSpec } from './features/specs/account/signin.js';
+import { createAccountSpec } from './specs/account/create';
+import AccountManager from './Account';
+import { signinSpec } from './specs/account/signin';
 const { isValid } = pkg;
-const AccountMgr = new AccountManager();
+const AccountMgr: AccountManager = new AccountManager();
 
 export const server = () => {
     const app = express();
