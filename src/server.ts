@@ -1,4 +1,5 @@
 import express from 'express';
+import { bearerToken } from 'express-bearer-token';
 import pkg from '@json-spec/core';
 import { createAccountSpec } from './specs/account/create';
 import AccountManager from './Account';
@@ -8,6 +9,7 @@ const AccountMgr: AccountManager = new AccountManager();
 
 export default function CreateAPIServer(): express.Express {
     const app = express();
+    app.use(bearerToken());
     app.post('/api/account', express.json(), async (req, res) => {
         if (!isValid(createAccountSpec, req.body)) return res.sendStatus(400);
         await AccountMgr.AddNewAccount(req.body.id, req.body.name, req.body.privilege)
