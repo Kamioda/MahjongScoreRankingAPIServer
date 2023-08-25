@@ -17,7 +17,7 @@ export default class AccessTokenManager {
         this.#AccessTokens[AccessToken] = TargetAccountID;
         return AccessToken;
     }
-    getId(Token: string): string {
+    getId(Token: string): string | null {
         return this.#AccessTokens[Token];
     }
     invalidation(Token: string): boolean {
