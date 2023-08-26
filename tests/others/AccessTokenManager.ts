@@ -56,4 +56,22 @@ describe('Access Token Manager Test', function() {
             assert.strictEqual(ATM.getId(ErrorTokenCache) == null, true);
         });
     });
+    describe('invalidation', function() {
+        const ATM = new AccessTokenManager();
+        let AccessTokenCache = '';
+        let ErrorTokenCache = '';
+        beforeEach(function() {
+            AccessTokenCache = ATM.create(TestID);
+            ErrorTokenCache = ATM.createAccessTokenText();
+        });
+        it('valid', function() {
+            assert.strictEqual(ATM.invalidation(AccessTokenCache), true);
+            assert.strictEqual(ATM.getId(AccessTokenCache) == null, true);
+        });
+        it('invalid', function() {
+            assert.strictEqual(ATM.invalidation(ErrorTokenCache), false);
+            assert.strictEqual(ATM.getId(AccessTokenCache) == null, false);
+        });
+
+    });
 });
