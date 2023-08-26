@@ -23,7 +23,6 @@ export default function CreateAPIServer(): express.Express {
         if (req.token == null) return res.sendStatus(401);
         const SystemID = AccessToken.getId(req.token);
         if (SystemID == null) return res.sendStatus(401);
-
         await AccountMgr.GetAccountInfo(SystemID)
             .then(data => data.privilege === 0)
             .then(allowed => {
@@ -53,7 +52,6 @@ export default function CreateAPIServer(): express.Express {
         if (req.token == null) return res.sendStatus(401);
         const SystemID = AccessToken.getId(req.token);
         if (SystemID == null) return res.sendStatus(401);
-
         if (!isValid(updateAccountSpec, req.body)) return res.sendStatus(400);
         await AccountMgr.ChangeUserInfo(SystemID, req.body as NewUserInformation).then(newRecord => {
             return newRecord == null ? res.sendStatus(400) : res.status(200).json(newRecord);
@@ -63,7 +61,6 @@ export default function CreateAPIServer(): express.Express {
         if (req.token == null) return res.sendStatus(401);
         const SystemID = AccessToken.getId(req.token);
         if (SystemID == null) return res.sendStatus(401);
-
         await AccountMgr.DeleteUser(SystemID)
             .then(result => {
                 res.sendStatus(result.ID === SystemID ? 200 : 500);
@@ -92,7 +89,6 @@ export default function CreateAPIServer(): express.Express {
         if (req.token == null) return res.sendStatus(401);
         const SystemID = AccessToken.getId(req.token);
         if (SystemID == null) return res.sendStatus(401);
-
         if (!isValid(newRecordSpec, req.body)) return res.sendStatus(400);
         ScoreMgr.add(req.body);
         res.sendStatus(200);
