@@ -44,11 +44,8 @@ export default function CreateAPIServer(): express.Express {
         if (SystemID == null) return res.sendStatus(401);
 
         if (!isValid(updateAccountSpec, req.body)) return res.sendStatus(400);
-        await AccountMgr.ChangeUserInfo(SystemID, req.body as NewUserInformation)
-        .then(newRecord => {
-            return newRecord == null
-                ? res.sendStatus(400)
-                : res.status(200).json(newRecord);
+        await AccountMgr.ChangeUserInfo(SystemID, req.body as NewUserInformation).then(newRecord => {
+            return newRecord == null ? res.sendStatus(400) : res.status(200).json(newRecord);
         });
     });
     app.post('/api/signin', express.json(), async (req, res) => {
