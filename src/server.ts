@@ -89,14 +89,24 @@ export default function CreateAPIServer(): express.Express {
             });
     });
     app.post('/api/record', express.json(), async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
+
         if (!isValid(newRecordSpec, req.body)) return res.sendStatus(400);
         ScoreMgr.add(req.body);
         res.sendStatus(200);
     });
     app.get('/api/record', async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
         res.status(200).json(ScoreMgr.read());
     });
     app.delete('/api/record/:record_id', async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
         ScoreMgr.remove(req.params.record_id);
         res.sendStatus(200);
     });
