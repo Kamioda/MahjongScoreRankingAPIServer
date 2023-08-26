@@ -11,9 +11,14 @@ export default class AccessTokenManager {
         this.#AccessTokens = {};
         this.#TokenLen = AccessTokenLength;
     }
-    create(TargetAccountID: string): string {
+    #createAccessToken(): string {
         const AccessToken = createRandomString({ length: this.#TokenLen, charset: 'alphanumeric' });
-        if (Object.keys(this.#AccessTokens).includes(AccessToken)) return this.create(TargetAccountID);
+        return (Object.keys(this.#AccessTokens).includes(AccessToken))
+            ? this.#createAccessToken()
+            : AccessToken;
+    }
+    create(TargetAccountID: string): string {
+        const AccessToken = this.#createAccessToken();
         this.#AccessTokens[AccessToken] = TargetAccountID;
         return AccessToken;
     }
