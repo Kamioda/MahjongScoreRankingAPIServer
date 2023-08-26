@@ -20,11 +20,21 @@ export default function CreateAPIServer(): express.Express {
     const app = express();
     app.use(bearerToken());
     app.post('/api/account', express.json(), async (req, res) => {
-        if (!isValid(createAccountSpec, req.body)) return res.sendStatus(400);
-        await AccountMgr.AddNewAccount(req.body.id, req.body.name, req.body.privilege)
-            .then(result => res.status(201).send(JSON.stringify(result)))
-            .catch(er => {
-                console.log(er.message);
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
+
+        await AccountMgr.GetAccountInfo(SystemID)
+            .then(data => data.privilege === 0)
+            .then(allowed => {
+                if (!allowed) return res.sendStatus(403);
+                if (!isValid(createAccountSpec, req.body)) return res.sendStatus(400);
+                return AccountMgr.AddNewAccount(req.body.id, req.body.name, req.body.privilege)
+                    .then(result => res.status(201).send(JSON.stringify(result)))
+                    .catch(er => {
+                        console.log(er.message);
+                        return res.sendStatus(500);
+                    });
             });
     });
     app.get('/api/account', async (req, res) => {
