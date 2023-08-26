@@ -9,6 +9,7 @@ import { createAccountSpec } from './specs/account/create';
 import { signinSpec } from './specs/account/signin';
 import { newRecordSpec } from './specs/record/new';
 import { updateAccountSpec } from './specs/account/update';
+import { writeFileSync } from 'fs';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
 const AccountMgr: AccountManager = new AccountManager(Config.account_manager.password_len);
@@ -46,6 +47,23 @@ export default function CreateAPIServer(): express.Express {
         if (!isValid(updateAccountSpec, req.body)) return res.sendStatus(400);
         await AccountMgr.ChangeUserInfo(SystemID, req.body as NewUserInformation).then(newRecord => {
             return newRecord == null ? res.sendStatus(400) : res.status(200).json(newRecord);
+        });
+    });
+    app.delete('/api/account', async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
+
+        await AccountMgr.DeleteUser(SystemID).then(result => {
+            res.sendStatus(result.ID === SystemID ? 200 : 500);
+            if (result.ID !== result.ID) {
+                const WriteData = result;
+                WriteData['delete_target'] = SystemID;
+                writeFileSync(`./error-${Date.now.toString()}.data`, JSON.stringify(WriteData));
+            }
+        })
+        .catch((er: Error) => {
+            res.status(500).send(er.message);
         });
     });
     app.post('/api/signin', express.json(), async (req, res) => {
