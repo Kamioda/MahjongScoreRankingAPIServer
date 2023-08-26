@@ -54,17 +54,18 @@ export default function CreateAPIServer(): express.Express {
         const SystemID = AccessToken.getId(req.token);
         if (SystemID == null) return res.sendStatus(401);
 
-        await AccountMgr.DeleteUser(SystemID).then(result => {
-            res.sendStatus(result.ID === SystemID ? 200 : 500);
-            if (result.ID !== result.ID) {
-                const WriteData = result;
-                WriteData['delete_target'] = SystemID;
-                writeFileSync(`./error-${Date.now.toString()}.data`, JSON.stringify(WriteData));
-            }
-        })
-        .catch((er: Error) => {
-            res.status(500).send(er.message);
-        });
+        await AccountMgr.DeleteUser(SystemID)
+            .then(result => {
+                res.sendStatus(result.ID === SystemID ? 200 : 500);
+                if (result.ID !== result.ID) {
+                    const WriteData = result;
+                    WriteData['delete_target'] = SystemID;
+                    writeFileSync(`./error-${Date.now.toString()}.data`, JSON.stringify(WriteData));
+                }
+            })
+            .catch((er: Error) => {
+                res.status(500).send(er.message);
+            });
     });
     app.post('/api/signin', express.json(), async (req, res) => {
         if (!isValid(signinSpec, req.body)) return res.sendStatus(400);
