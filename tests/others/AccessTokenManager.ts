@@ -41,4 +41,19 @@ describe('Access Token Manager Test', function() {
             assert.strictEqual(AccessToken, AccessTokenCache[1]);
         });
     });
+    describe('get id', function() {
+        const ATM = new AccessTokenManager();
+        let AccessTokenCache = '';
+        let ErrorTokenCache = '';
+        before(function() {
+            AccessTokenCache = ATM.create(TestID);
+            ErrorTokenCache = ATM.createAccessTokenText();
+        });
+        it('valid', function() {
+            assert.strictEqual(ATM.getId(AccessTokenCache), TestID);
+        });
+        it('invalid', function() {
+            assert.strictEqual(ATM.getId(ErrorTokenCache) == null, true);
+        });
+    });
 });
