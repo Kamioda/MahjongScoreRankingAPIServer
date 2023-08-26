@@ -32,7 +32,6 @@ describe('Access Token Manager Test', function() {
             while (AccessTokenCache[0] === AccessTokenCache[1]) AccessTokenCache[1] = ATM.createAccessTokenText();
             stubPrivCreateAccessTokenText = sinon.stub(ATM, 'createAccessTokenText')
                 .callsFake((): string => AccessTokenCache[stubAccessTokenCallIndex++]);
-            console.log(`Entried Access Token: ${AccessTokenCache[0]}`);
         });
         after(function() {
             if (stubPrivCreateAccessTokenText && stubPrivCreateAccessTokenText.restore) stubPrivCreateAccessTokenText.restore();
