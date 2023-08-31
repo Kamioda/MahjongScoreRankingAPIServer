@@ -59,10 +59,27 @@ export default function CreateAPIServer(): express.Express {
             return newRecord == null ? res.sendStatus(400) : res.status(200).json(newRecord);
         });
     });
-    app.delete('/api/account', async (req, res) => {
+    app.delete('/api/account/:id', async (req, res) => {
         if (req.token == null) return res.sendStatus(401);
         const SystemID = AccessToken.getId(req.token);
         if (SystemID == null) return res.sendStatus(401);
+        await AccountMgr.GetAccountInfo(SystemID).then(data => {
+            return AccountMgr.GetSystemID(req.params.id)
+                .then(targetSysID => {
+                    if (SystemID === targetSysID || data.privilege === 0)
+                        return AccountMgr.DeleteUser(targetSysID).then(deleteTargetAccountInfo => {
+                            const result = deleteTargetAccountInfo.ID === targetSysID;
+                            if (!result)
+                                writeFileSync(
+                                    `./error/wrongDelAccounts/${deleteTargetAccountInfo.ID}.json`,
+                                    JSON.stringify(deleteTargetAccountInfo)
+                                );
+                            return result ? 200 : 500;
+                        });
+                    else return 403;
+                })
+                .then(statusCode => res.sendStatus(statusCode));
+        });
         await AccountMgr.DeleteUser(SystemID)
             .then(result => {
                 res.sendStatus(result.ID === SystemID ? 200 : 500);
