@@ -11,6 +11,7 @@ import { newRecordSpec } from './specs/record/new';
 import { updateAccountSpec } from './specs/account/update';
 import { writeFileSync } from 'fs';
 import { changePasswordSpec } from './specs/account/changePassword';
+import { changePrivilegeSpec } from './specs/account/changePrivilege';
 const { isValid } = pkg;
 const Config = ReadAPIConfig('./api.config');
 const AccountMgr: AccountManager = new AccountManager(Config.account_manager.password_len);
@@ -85,6 +86,23 @@ export default function CreateAPIServer(): express.Express {
                 .then(id => {
                     if (SystemID === id || data.privilege === 0)
                         return AccountMgr.ChangePassword(id, req.body.password).then(result => (result ? 200 : 500));
+                    else return 403;
+                })
+                .then(statusCode => res.sendStatus(statusCode));
+        });
+    });
+    app.patch('/api/account/privilege', express.json(), async (req, res) => {
+        if (req.token == null) return res.sendStatus(401);
+        const SystemID = AccessToken.getId(req.token);
+        if (SystemID == null) return res.sendStatus(401);
+        if (!isValid(changePrivilegeSpec, req.body)) return res.sendStatus(400);
+        await AccountMgr.GetAccountInfo(SystemID).then(data => {
+            return AccountMgr.GetSystemID(req.body.id)
+                .then(id => {
+                    if (data.privilege === 0)
+                        return AccountMgr.ChangePrivilege(id, req.body.password).then(result =>
+                            result.AccountLevel === req.body.privilege ? 200 : 500
+                        );
                     else return 403;
                 })
                 .then(statusCode => res.sendStatus(statusCode));
