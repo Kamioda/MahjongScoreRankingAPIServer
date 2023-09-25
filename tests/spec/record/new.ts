@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import pkg from '@json-spec/core';
-import { newRecordSpec } from '../../../src/specs/record/new';
+import { newRecordSpec } from '../../../src/features/specs/record/new';
 import assert from 'assert';
 const { isValid } = pkg;
 

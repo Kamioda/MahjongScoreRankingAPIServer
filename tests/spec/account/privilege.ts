@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import pkg from '@json-spec/core';
-import { privilegeSpec } from '../../../src/specs/account/privilege';
+import { privilegeSpec } from '../../../src/features/specs/account/privilege';
 import assert from 'assert';
 const { isValid } = pkg;
 

@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import pkg from '@json-spec/core';
-import { SystemGenIDSpec } from '../../src/specs/SystemGenID';
+import { SystemGenIDSpec } from '../../src/features/specs/SystemGenID';
 import assert from 'assert';
 const { isValid } = pkg;
 

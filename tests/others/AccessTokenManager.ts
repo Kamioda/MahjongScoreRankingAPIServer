@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha';
-import AccessTokenManager from '../../src/AccessTokenManager';
+import AccessTokenManager from '../../src/features/AccessTokenManager';
 import assert from 'assert';
 import * as sinon from 'sinon';
 

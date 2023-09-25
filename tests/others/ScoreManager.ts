@@ -1,5 +1,5 @@
 import { describe, it, before, after } from 'mocha';
-import ScoreManager, { RecordInformations } from '../../src/ScoreManager';
+import ScoreManager, { RecordInformations } from '../../src/features/ScoreManager';
 import assert from 'assert';
 import { writeFileSync, existsSync, unlinkSync } from 'fs';
 import * as sinon from 'sinon';

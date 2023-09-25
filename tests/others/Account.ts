@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha';
-import { HashPassword, IsNullOrWhiteSpace } from '../../src/Account';
+import { HashPassword, IsNullOrWhiteSpace } from '../../src/features/Account';
 import assert from 'assert';
 
 describe('Account submodule test', function () {

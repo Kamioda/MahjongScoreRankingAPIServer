@@ -1,5 +1,5 @@
 import { describe, it, before, after } from 'mocha';
-import AccountManager, { HashPassword, UserInformation } from '../../src/Account';
+import AccountManager, { HashPassword, UserInformation } from '../../src/features/Account';
 import assert from 'assert';
 import * as sinon from 'sinon';
 import { readFileSync } from 'fs';

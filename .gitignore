@@ -132,7 +132,3 @@ dist
 
 # prisma
 migrations/
-
-# TypeScript build data
-
-features/
